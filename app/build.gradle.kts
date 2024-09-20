@@ -1,15 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
 android {
-    namespace = "br.edu.kb.ExpenseTracker"
+    namespace = "br.edu.kb.expenseTracker"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "br.edu.kb.ExpenseTracker"
+        applicationId = "br.edu.kb.expenseTracker"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -69,11 +69,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    // implementation(libs.constraintlayout.compose)
 
-    implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:${room_version}")
+    annotationProcessor("androidx.room:room-runtime:${room_version}")
 
-    ksp(libs.androidx.room.compiler.v250)
-    //kapt("androidx.room:room-compiler:$room_version")
-    //implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:${room_version}")
+    implementation("androidx.room:room-ktx:${room_version}")
 }

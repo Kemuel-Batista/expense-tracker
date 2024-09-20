@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import br.edu.kb.ExpenseTracker.R
+import br.edu.kb.expenseTracker.R
 import br.edu.kb.expenseTracker.widget.ExpenseTextView
 
 @Composable
