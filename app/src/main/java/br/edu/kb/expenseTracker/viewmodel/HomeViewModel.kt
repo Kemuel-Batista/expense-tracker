@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import br.edu.kb.expenseTracker.data.ExpenseDatabase
 import br.edu.kb.expenseTracker.data.dao.ExpenseDao
 import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.R
+import br.edu.kb.expenseTracker.Utils
 
 class HomeViewModel(dao: ExpenseDao) : ViewModel() {
     val expenses = dao.getAllExpenses()
@@ -19,7 +21,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 balance -= expense.amount
             }
         }
-        return "$ $balance"
+        return "$ ${Utils.formatToDecimalValue(balance)}"
     }
 
     fun getTotalExpense(list : List<ExpenseEntity>) : String {
@@ -30,7 +32,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
             }
         }
 
-        return "$ $total"
+        return "$ ${Utils.formatToDecimalValue(total)}"
     }
 
     fun getTotalIncome(list : List<ExpenseEntity>) : String {
@@ -41,7 +43,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
             }
         }
 
-        return "$ $totalIncome"
+        return "$ ${Utils.formatToDecimalValue(totalIncome)}"
     }
 }
 

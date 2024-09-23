@@ -48,6 +48,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
 }
 
 dependencies {
@@ -77,4 +83,9 @@ dependencies {
 
     kapt("androidx.room:room-compiler:${room_version}")
     implementation("androidx.room:room-ktx:${room_version}")
+
+    val nav_version = "2.8.0"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation(libs.mpandroidchart)
 }
