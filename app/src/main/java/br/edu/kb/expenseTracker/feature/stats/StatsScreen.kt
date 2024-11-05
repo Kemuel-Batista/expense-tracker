@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +26,7 @@ import androidx.navigation.NavController
 import br.edu.kb.expenseTracker.R
 import br.edu.kb.expenseTracker.Utils
 import br.edu.kb.expenseTracker.feature.home.TransactionList
-import br.edu.kb.expenseTracker.viewmodel.StatsViewModel
-import br.edu.kb.expenseTracker.viewmodel.StatsViewModelFactory
+import br.edu.kb.expenseTracker.viewmodel.ExpenseViewModel
 import br.edu.kb.expenseTracker.widget.ExpenseTextView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -36,7 +36,9 @@ import com.github.mikephil.charting.data.LineDataSet
 
 
 @Composable
-fun StatsScreen(navController: NavController) {
+fun StatsScreen(navController: NavController, viewModel: ExpenseViewModel) {
+    val topExpenses by viewModel.topExpenses.collectAsState()
+
     Scaffold(topBar = {
         Box(
             modifier = Modifier
@@ -67,16 +69,11 @@ fun StatsScreen(navController: NavController) {
             )
         }
     }) {
-        val viewModel =
-            StatsViewModelFactory(navController.context).create(StatsViewModel::class.java)
-        val dataState = viewModel.entries.collectAsState(emptyList())
-        val topExpense = viewModel.topEntries.collectAsState(initial = emptyList())
-
         Column(modifier = Modifier.padding(it)) {
-            val entries = viewModel.getEntriesForChart(dataState.value)
+            val entries = viewModel.getEntriesForChart()
             LineChart(entries = entries)
             Spacer(modifier = Modifier.height(16.dp))
-            TransactionList(Modifier, list = topExpense.value, "Top Spending")
+            TransactionList(Modifier, list = topExpenses, "Top Spending")
         }
     }
 }

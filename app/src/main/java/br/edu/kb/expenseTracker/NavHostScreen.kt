@@ -24,6 +24,7 @@ import br.edu.kb.expenseTracker.feature.add_expense.AddExpenseScreen
 import br.edu.kb.expenseTracker.feature.home.HomeScreen
 import br.edu.kb.expenseTracker.feature.stats.StatsScreen
 import br.edu.kb.expenseTracker.ui.theme.Zinc
+import br.edu.kb.expenseTracker.viewmodel.ExpenseViewModel
 
 object Routes {
     const val HOME = "/home"
@@ -32,7 +33,7 @@ object Routes {
 }
 
 @Composable
-fun NavHostScreen() {
+fun NavHostScreen(viewModel: ExpenseViewModel) {
     val navController = rememberNavController()
     var bottomBarVisibility by remember {
         mutableStateOf(true)
@@ -56,17 +57,17 @@ fun NavHostScreen() {
         ) {
             composable(Routes.HOME) {
                 bottomBarVisibility = true
-                HomeScreen(navController)
+                HomeScreen(navController, viewModel)
             }
 
             composable(Routes.ADD_EXPENSE) {
                 bottomBarVisibility = false
-                AddExpenseScreen(navController)
+                AddExpenseScreen(navController, viewModel)
             }
 
             composable(Routes.STATS) {
                 bottomBarVisibility = true
-                StatsScreen(navController)
+                StatsScreen(navController, viewModel)
             }
         }
     }

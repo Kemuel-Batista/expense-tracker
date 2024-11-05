@@ -19,11 +19,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,13 +36,12 @@ import br.edu.kb.expenseTracker.Routes
 import br.edu.kb.expenseTracker.Utils
 import br.edu.kb.expenseTracker.data.model.ExpenseEntity
 import br.edu.kb.expenseTracker.ui.theme.Zinc
-import br.edu.kb.expenseTracker.viewmodel.HomeViewModel
-import br.edu.kb.expenseTracker.viewmodel.HomeViewModelFactory
+import br.edu.kb.expenseTracker.viewmodel.ExpenseViewModel
 import br.edu.kb.expenseTracker.widget.ExpenseTextView
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    val viewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
+    val expenses by viewModel.expenses.collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize()) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -77,16 +76,15 @@ fun HomeScreen(navController: NavController) {
                 )
             }
 
-            val state = viewModel.expenses.collectAsState(initial = emptyList())
-            val expenses = viewModel.getTotalExpense(state.value)
-            val income = viewModel.getTotalExpense(state.value)
-            val balance = viewModel.getBalance(state.value)
+            val totalExpense = viewModel.getTotalExpense()
+            val income = viewModel.getTotalExpense()
+            val balance = viewModel.getBalance()
 
             CardItem(modifier = Modifier.constrainAs(card) {
                 top.linkTo(nameRow.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }, balance, income, expenses)
+            }, balance, income, totalExpense)
 
             TransactionList(modifier = Modifier.fillMaxWidth().constrainAs(list) {
                 top.linkTo(card.bottom)
@@ -94,7 +92,7 @@ fun HomeScreen(navController: NavController) {
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
                 height = Dimension.fillToConstraints
-            }, list = state.value)
+            }, list = expenses)
 
             Image(
                 painter = painterResource(id = R.drawable.ic_add),

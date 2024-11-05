@@ -45,15 +45,12 @@ import androidx.navigation.NavController
 import br.edu.kb.expenseTracker.R
 import br.edu.kb.expenseTracker.Utils
 import br.edu.kb.expenseTracker.data.model.ExpenseEntity
-import br.edu.kb.expenseTracker.viewmodel.AddExpenseViewModel
-import br.edu.kb.expenseTracker.viewmodel.AddExpenseViewModelFactory
+import br.edu.kb.expenseTracker.viewmodel.ExpenseViewModel
 import br.edu.kb.expenseTracker.widget.ExpenseTextView
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddExpenseScreen(navController: NavController) {
-    val viewModel =
-        AddExpenseViewModelFactory(LocalContext.current).create(AddExpenseViewModel::class.java)
+fun AddExpenseScreen(navController: NavController, viewModel: ExpenseViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
     Surface(modifier = Modifier.fillMaxSize()) {
