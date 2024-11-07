@@ -77,7 +77,7 @@ fun HomeScreen(navController: NavController, viewModel: ExpenseViewModel) {
             }
 
             val totalExpense = viewModel.getTotalExpense()
-            val income = viewModel.getTotalExpense()
+            val income = viewModel.getTotalIncome()
             val balance = viewModel.getBalance()
 
             CardItem(modifier = Modifier.constrainAs(card) {

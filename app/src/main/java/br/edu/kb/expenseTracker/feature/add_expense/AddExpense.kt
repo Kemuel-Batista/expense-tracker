@@ -1,5 +1,6 @@
 package br.edu.kb.expenseTracker.feature.add_expense
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -198,7 +199,7 @@ fun DataForm(modifier: Modifier, onAddExpenseClick: (model: ExpenseEntity) -> Un
                 category.value,
                 type.value
             )
-            onAddExpenseClick(model)
+             onAddExpenseClick(model)
         }, modifier = Modifier.fillMaxWidth()) {
             ExpenseTextView(text = "Add Expense", fontSize = 14.sp, color = Color.White)
         }
