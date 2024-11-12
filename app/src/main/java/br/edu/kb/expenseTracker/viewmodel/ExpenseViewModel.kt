@@ -6,20 +6,20 @@ import br.edu.kb.expenseTracker.Utils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.data.model.Expense
 import br.edu.kb.expenseTracker.data.model.ExpenseSummary
 import br.edu.kb.expenseTracker.data.repositories.IExpenseRepository
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 
 class ExpenseViewModel(private val repository: IExpenseRepository): ViewModel() {
-    private val _expenses = MutableStateFlow<List<ExpenseEntity>>(emptyList())
-    val expenses: StateFlow<List<ExpenseEntity>> get() = _expenses
+    private val _expenses = MutableStateFlow<List<Expense>>(emptyList())
+    val expenses: StateFlow<List<Expense>> get() = _expenses
 
     private val _expensesByDate = MutableStateFlow<List<ExpenseSummary>>(emptyList())
 
-    private val _topExpenses = MutableStateFlow<List<ExpenseEntity>>(emptyList())
-    val topExpenses: StateFlow<List<ExpenseEntity>> get() = _topExpenses
+    private val _topExpenses = MutableStateFlow<List<Expense>>(emptyList())
+    val topExpenses: StateFlow<List<Expense>> get() = _topExpenses
 
     init {
         viewModelScope.launch {
@@ -33,10 +33,10 @@ class ExpenseViewModel(private val repository: IExpenseRepository): ViewModel() 
         }
     }
 
-    suspend fun addExpense(expenseEntity: ExpenseEntity): Boolean {
+    suspend fun addExpense(expense: Expense): Boolean {
         return try {
             viewModelScope.launch {
-                repository.insertExpense(expenseEntity)
+                repository.insertExpense(expense)
             }
             true
         } catch (ex: Throwable) {

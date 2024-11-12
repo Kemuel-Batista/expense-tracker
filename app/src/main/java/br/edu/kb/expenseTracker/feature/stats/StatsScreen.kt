@@ -34,7 +34,6 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 
-
 @Composable
 fun StatsScreen(navController: NavController, viewModel: ExpenseViewModel) {
     val topExpenses by viewModel.topExpenses.collectAsState()

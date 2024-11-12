@@ -1,6 +1,6 @@
 package br.edu.kb.expenseTracker
 
-import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.data.model.Expense
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,7 +42,7 @@ object Utils {
         return date.time
     }
 
-    fun getItemIcon(item: ExpenseEntity): Int {
+    fun getItemIcon(item: Expense): Int {
         return if (item.category == "Paypal") {
             R.drawable.ic_paypal
         } else if (item.category == "Netflix") {

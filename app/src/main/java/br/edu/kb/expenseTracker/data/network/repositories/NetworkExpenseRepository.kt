@@ -1,7 +1,8 @@
-package br.edu.kb.expenseTracker.data.repositories
+package br.edu.kb.expenseTracker.data.network.repositories
 
-import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.data.model.Expense
 import br.edu.kb.expenseTracker.data.model.ExpenseSummary
+import br.edu.kb.expenseTracker.data.repositories.IExpenseRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
@@ -9,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-class RemoteExpenseRepository : IExpenseRepository {
+class NetworkExpenseRepository : IExpenseRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val expenseCollection = firestore.collection("expenses")
 
-    override fun getAllExpenses(): Flow<List<ExpenseEntity>> = callbackFlow {
+    override fun getAllExpenses(): Flow<List<Expense>> = callbackFlow {
         val listener = expenseCollection.addSnapshotListener {
-            data, errors ->
+                data, errors ->
 
             if (errors != null) {
                 close(errors)
@@ -24,7 +25,7 @@ class RemoteExpenseRepository : IExpenseRepository {
 
             if (data != null) {
                 val expenses = data.documents.mapNotNull {
-                    it.toObject(ExpenseEntity::class.java)
+                    it.toObject(Expense::class.java)
                 }
                 trySend(expenses).isSuccess
             }
@@ -33,7 +34,7 @@ class RemoteExpenseRepository : IExpenseRepository {
         awaitClose { listener.remove() }
     }
 
-    override fun getTopExpenses(): Flow<List<ExpenseEntity>> = callbackFlow {
+    override fun getTopExpenses(): Flow<List<Expense>> = callbackFlow {
         val listener = expenseCollection
             .whereEqualTo("type", "Expense")
             .orderBy("amount", Query.Direction.DESCENDING)
@@ -48,7 +49,7 @@ class RemoteExpenseRepository : IExpenseRepository {
 
                 if (data != null) {
                     val expenses = data.documents.mapNotNull {
-                        it.toObject(ExpenseEntity::class.java)
+                        it.toObject(Expense::class.java)
                     }
                     trySend(expenses).isSuccess
                 }
@@ -70,7 +71,7 @@ class RemoteExpenseRepository : IExpenseRepository {
 
                 if (data != null) {
                     val expensesByDate = data.documents
-                        .mapNotNull { it.toObject(ExpenseEntity::class.java) }
+                        .mapNotNull { it.toObject(Expense::class.java) }
                         .groupBy { it.date }
                         .map { (date, expenses) ->
                             ExpenseSummary(
@@ -95,20 +96,20 @@ class RemoteExpenseRepository : IExpenseRepository {
         return maxId + 1
     }
 
-    override suspend fun insertExpense(expenseEntity: ExpenseEntity) {
-        expenseEntity.id = getId()
-        val document = expenseCollection.document(expenseEntity.id.toString())
+    override suspend fun insertExpense(expense: Expense) {
+        expense.id = getId()
+        val document = expenseCollection.document(expense.id.toString())
 
-        document.set(expenseEntity).await()
+        document.set(expense).await()
     }
 
-    override suspend fun deleteExpense(expenseEntity: ExpenseEntity) {
-        expenseCollection.document(expenseEntity.id.toString()).delete().await()
+    override suspend fun deleteExpense(expense: Expense) {
+        expenseCollection.document(expense.id.toString()).delete().await()
     }
 
-    override suspend fun updateExpense(expenseEntity: ExpenseEntity) {
-        val document = expenseCollection.document(expenseEntity.id.toString())
+    override suspend fun updateExpense(expense: Expense) {
+        val document = expenseCollection.document(expense.id.toString())
 
-        document.set(expenseEntity).await()
+        document.set(expense).await()
     }
 }

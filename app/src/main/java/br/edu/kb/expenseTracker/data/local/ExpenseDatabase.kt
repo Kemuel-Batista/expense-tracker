@@ -1,15 +1,15 @@
-package br.edu.kb.expenseTracker.data.db
+package br.edu.kb.expenseTracker.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import br.edu.kb.expenseTracker.data.dao.ExpenseDao
-import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.data.local.dao.ExpenseDao
+import br.edu.kb.expenseTracker.data.local.entities.ExpenseEntity
 
 @Database(entities = [ExpenseEntity::class], version = 1)
 abstract class ExpenseDB : RoomDatabase() {
-    abstract fun getExpenseDao(): ExpenseDao
+    abstract fun expenseDao(): ExpenseDao
 }
 
 fun openDatabase(context: Context): ExpenseDB {

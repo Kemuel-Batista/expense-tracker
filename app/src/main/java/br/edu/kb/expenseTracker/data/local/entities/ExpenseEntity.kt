@@ -1,4 +1,4 @@
-package br.edu.kb.expenseTracker.data.model
+package br.edu.kb.expenseTracker.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

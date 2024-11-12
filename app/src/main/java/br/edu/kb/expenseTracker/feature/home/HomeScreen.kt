@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 import br.edu.kb.expenseTracker.R
 import br.edu.kb.expenseTracker.Routes
 import br.edu.kb.expenseTracker.Utils
-import br.edu.kb.expenseTracker.data.model.ExpenseEntity
+import br.edu.kb.expenseTracker.data.model.Expense
 import br.edu.kb.expenseTracker.ui.theme.Zinc
 import br.edu.kb.expenseTracker.viewmodel.ExpenseViewModel
 import br.edu.kb.expenseTracker.widget.ExpenseTextView
@@ -158,7 +158,7 @@ fun CardItem(modifier: Modifier, balance: String, income: String, expenses: Stri
 }
 
 @Composable
-fun TransactionList(modifier: Modifier, list: List<ExpenseEntity>, title: String = "Recent Transactions") {
+fun TransactionList(modifier: Modifier, list: List<Expense>, title: String = "Recent Transactions") {
     LazyColumn (modifier = modifier.padding(horizontal = 16.dp)) {
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
